@@ -1,0 +1,28 @@
+环境：
+	VirtualBox+vagrant+Homestead+Composer
+	Linux homestead 4.4.0-51-generic #72-Ubuntu SMP Thu Nov 24 18:29:54 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+	laravel版本：5.2.45
+
+Nginx的rewrite指令URL重写需要开启（我安装的默认没有开启）：
+	if (!-f $request_filename){
+		rewrite ^/(.+)$ /index.php?$1& last;
+    }
+	
+网上有命令行自动提示_方法：
+	https://www.laravist.com/series/stuff-associate-with-programming-on-your-mac/episodes/1
+	https://asciinema.org/a/37390
+
+后期代码可以通过phpstorm SFTP传输（服务器得是联网的）
+	
+创建控制器：
+	laravel# php artisan make:controller TestController （laravel 5.2之后的版本后面都不需要要加 --plain）
+	要生成 index create 等方法，需要 传入 --resource
+	
+使用illuminate/html：
+	composer require laravelcollective/html
+		会安装最新的版本（5.4），与我现在版本不匹配
+		composer require laravelcollective/html v5.2 (失败)
+		composer require laravelcollective/html v5.2.5 (失败)
+		composer require laravelcollective/html v5.2.4 (成功)
+			具体配置：http://www.jianshu.com/p/e00d9086aa2d
+			
