@@ -26,3 +26,12 @@ Nginx的rewrite指令URL重写需要开启（我安装的默认没有开启）：
 		composer require laravelcollective/html v5.2.4 (成功)
 			具体配置：http://www.jianshu.com/p/e00d9086aa2d
 			
+退出登陆：
+			现在有点奇怪，http://www.imooc.com/wenda/detail/340933 看这里的介绍是没问题的，但是我执行退出的时候就一直没被执行，注释了以后/except改成only就能执行成功。
+			 app\Http\Controllers\Auth\AuthController.php
+				public function __construct()
+				{
+					第一种方法：//$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+					第二种方法：$this->middleware($this->guestMiddleware(), ['only' => 'logout']);
+				}
+				
