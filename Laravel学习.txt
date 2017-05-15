@@ -27,11 +27,51 @@ Nginx的rewrite指令URL重写需要开启（我安装的默认没有开启）：
 			具体配置：http://www.jianshu.com/p/e00d9086aa2d
 			
 退出登陆：
-			现在有点奇怪，http://www.imooc.com/wenda/detail/340933 看这里的介绍是没问题的，但是我执行退出的时候就一直没被执行，注释了以后/except改成only就能执行成功。
-			 app\Http\Controllers\Auth\AuthController.php
-				public function __construct()
-				{
-					第一种方法：//$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
-					第二种方法：$this->middleware($this->guestMiddleware(), ['only' => 'logout']);
-				}
+	现在有点奇怪，http://www.imooc.com/wenda/detail/340933 看这里的介绍是没问题的，但是我执行退出的时候就一直没被执行，注释了以后/except改成only就能执行成功。
+	 app\Http\Controllers\Auth\AuthController.php
+		public function __construct()
+		{
+			第一种方法：//$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+			第二种方法：$this->middleware($this->guestMiddleware(), ['only' => 'logout']);
+		}
 				
+重置密码：password
+	routes.php:
+	Route::get('mail', function () {
+		$data = ['name' => 'CanoeChow'];
+		Mail::send('auth.emails.hello', $data, function ($message) {
+			$message->to('ahfuzl@126.com')->subject('Welcome');
+		});
+		return 'OK!';
+	});
+	
+	.env:
+	MAIL_DRIVER=smtp
+	MAIL_HOST=smtp.126.com
+	MAIL_PORT=25
+	MAIL_USERNAME=ahfuzl@126.com
+	MAIL_PASSWORD=******
+	MAIL_ENCRYPTION=null
+	
+	auth/emails/hello.blade.php
+	
+社会化登录：（composer.json有对应信息）
+	composer require laravel/socialite v2.0.4 （跟laravel版本有关系，安装最新的laravel/socialite版本会失败）
+
+GIT第三方登录：
+		https://github.com/settings/applications
+			http://www.open-open.com/lib/view/open1416812717570.html
+			http://duguying.net/article/%E7%94%A8github%E7%99%BB%E5%BD%95%EF%BC%8Coauth%E5%BC%80%E5%8F%91
+		
+
+		
+
+		
+		
+		
+未完待续：
+	http://laravelacademy.org/post/3074.html
+		6、7、8、9
+	http://laravelacademy.org/post/3082.html
+		all		
+		
