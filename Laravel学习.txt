@@ -1,41 +1,44 @@
-������
+环境：
 	VirtualBox+vagrant+Homestead+Composer
 	Linux homestead 4.4.0-51-generic #72-Ubuntu SMP Thu Nov 24 18:29:54 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
-	laravel�汾��5.2.45
+	laravel版本：5.2.45
 
-Nginx��rewriteָ��URL��д��Ҫ�������Ұ�װ��Ĭ��û�п�������
+Nginx的rewrite指令URL重写需要开启（我安装的默认没有开启）：
 	if (!-f $request_filename){
 		rewrite ^/(.+)$ /index.php?$1& last;
     }
 	
-�������������Զ���ʾ_������
+网上有命令行自动提示_方法：
 	https://www.laravist.com/series/stuff-associate-with-programming-on-your-mac/episodes/1
 	https://asciinema.org/a/37390
-
-���ڴ������ͨ��phpstorm SFTP���䣨���������������ģ�
 	
-������������
-	laravel# php artisan make:controller TestController ��laravel 5.2֮��İ汾���涼����ҪҪ�� --plain��
-	Ҫ���� index create �ȷ�������Ҫ ���� --resource
+后期代码可以通过phpstorm SFTP传输（服务器得是联网的）
 	
-ʹ��illuminate/html��
+composer使用国内镜像，执行下面命令后即可：
+	composer config -g repo.packagist composer https://packagist.phpcomposer.com
+	
+创建控制器：
+	laravel# php artisan make:controller TestController （laravel 5.2之后的版本后面都不需要要加 --plain）
+	要生成 index create 等方法，需要 传入 --resource
+	
+使用illuminate/html：
 	composer require laravelcollective/html
-		�ᰲװ���µİ汾��5.4�����������ڰ汾��ƥ��
-		composer require laravelcollective/html v5.2 (ʧ��)
-		composer require laravelcollective/html v5.2.5 (ʧ��)
-		composer require laravelcollective/html v5.2.4 (�ɹ�)
-			�������ã�http://www.jianshu.com/p/e00d9086aa2d
+		会安装最新的版本（5.4），与我现在版本不匹配
+		composer require laravelcollective/html v5.2 (失败)
+		composer require laravelcollective/html v5.2.5 (失败)
+		composer require laravelcollective/html v5.2.4 (成功)
+			具体配置：http://www.jianshu.com/p/e00d9086aa2d
 			
-�˳���½��
-	�����е���֣�http://www.imooc.com/wenda/detail/340933 ������Ľ�����û����ģ�������ִ���˳���ʱ���һֱû��ִ�У�ע�����Ժ�/except�ĳ�only����ִ�гɹ���
+退出登陆：
+	现在有点奇怪，http://www.imooc.com/wenda/detail/340933 看这里的介绍是没问题的，但是我执行退出的时候就一直没被执行，注释了以后/except改成only就能执行成功。
 	 app\Http\Controllers\Auth\AuthController.php
 		public function __construct()
 		{
-			��һ�ַ�����//$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
-			�ڶ��ַ�����$this->middleware($this->guestMiddleware(), ['only' => 'logout']);
+			第一种方法：//$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+			第二种方法：$this->middleware($this->guestMiddleware(), ['only' => 'logout']);
 		}
 				
-�������룺password
+邮箱重置密码：password
 	routes.php:
 	Route::get('mail', function () {
 		$data = ['name' => 'CanoeChow'];
@@ -55,23 +58,66 @@ Nginx��rewriteָ��URL��д��Ҫ�������Ұ�װ��Ĭ��û�п�������
 	
 	auth/emails/hello.blade.php
 	
-��ữ��¼����composer.json�ж�Ӧ��Ϣ��
-	composer require laravel/socialite v2.0.4 ����laravel�汾�й�ϵ����װ���µ�laravel/socialite�汾��ʧ�ܣ�
+社会化登录：（composer.json有对应信息）
+	composer require laravel/socialite v2.0.4 （跟laravel版本有关系，安装最新的laravel/socialite版本会失败）
 
-GIT��������¼��
+GIT第三方登录：
 		https://github.com/settings/applications
 			http://www.open-open.com/lib/view/open1416812717570.html
 			http://duguying.net/article/%E7%94%A8github%E7%99%BB%E5%BD%95%EF%BC%8Coauth%E5%BC%80%E5%8F%91
 		
+Laravel不能创建 migration 的问题：
+	在 Laravel 项目中，由于测试，有时候用 PHP artisan make:migration create_xxx_table 创建数据库迁移。如果把创建的迁移文件 database/migrations/2016_09_13_081736_create_xxx_table.php 文件给删除了，再次执行 php artisan make:migration create_xxx_table 会报错：
+	[ErrorException]
+	include(/data/wwwroot/tj.com/vendor/composer/../../database/migrations/2016_09_13_081736_create_xxx_table.php): failed to open stream: No such file or directory
+	经过对比发现，在执行 artisan 命令后，会在 vendor/composer/autoload_classmap.php 和 vendor/composer/autoload_static.php 这两个文件里加上新生成的类和文件的映射，因为有了这个映射， artisan 命令就没有再生成新的文件。
+	所以删除上面两个文件里的有 create_xxx_table 的行就可以解决这个问题。
+	
+	或者再用 artisan 创建一个新的数据库迁移，这时会更新 composer 类和文件的映射。原来那个映射没有了，这时再创建先前那个 migration 也不会报错了。
+	
+	重新运行 composer update 又可以执行上面的命令了。
+		
+安装指定的 laravel版本 以下的案例是安装5.2版本:
+	composer create-project laravel/laravel=5.2.* --prefer-dist
+vim config/app.php
+	'timezone' => 'PRC',
 
-		
+SESSION机制：
+	除非也能用第三方的类的话，需要开启session_start();
+	其他的还是用laravel的调用方式。
+	
+样式引用：
+	{{asset('resources/......')}}
+	
+地址引用：
+	{{url('admin/code')}}
+	
+点击触发(有些浏览器会觉得url没变化，不触发效果):
+	通过JS，欺骗浏览器：Math.random()
+	
+表单提交，加一段代码，用于防止SCRF攻击：
+	{{csrf_field()}}
 
-		
-		
-		
-δ�������
-	http://laravelacademy.org/post/3074.html
-		6��7��8��9
-	http://laravelacademy.org/post/3082.html
-		all		
-		
+Input::all()等于TP中的IS_POST
+我的laravel版本下面，已经不能直接使用，路由里面用any后，打开对应页面就会直接显示提交以后里面的内容。
+我选择了提交到另一个方法里面，但是back()->with('msg', 'XXX')重定向至前一个页面，但传入的值用session('msg')无法取到：
+	web中间件从laravel 5.2.27版本及以后默认全局加载，不需要自己手动载入，如果自己手动重复载入，会导致session无法加载的情况
+	项目路由配置时，所有路由是配置在一个总的路由分组中，对这个分组添加了web中间件。删掉这个中间件或者去掉这个路由分组，问题得到解决
+	如果不使用session，可以使用return view()->with('msg','验证码错误')，来进行重定向并向模板传递变量，通过取$msg来获取变量。
+	
+Validation验证时使用back()->withErrors($validator);
+		@if(count($errors)>0)
+            <div class="mark">
+                @if(is_object($errors))
+                    @foreach($errors->all() as $error)
+                        <p>{{$error}}</p>
+                    @endforeach
+                @else
+                    <p>{{$errors}}</p>
+                @endif
+            </div>
+        @endif
+	
+(门面)View::share('navs', $navs);		//是将数据共享给所有视图。
+	  view()->share('key', 'value');	
+	
