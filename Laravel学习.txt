@@ -121,3 +121,11 @@ Validation验证时使用back()->withErrors($validator);
 (门面)View::share('navs', $navs);		//是将数据共享给所有视图。
 	  view()->share('key', 'value');	
 	
+Laravel如何引用第三方（自定义）库：
+	http://blog.csdn.net/iroycn/article/details/47036719
+	
+项目上线前，更新APP_KEY：
+	php artisan key:generate
+	
+	
+		
