@@ -1,7 +1,10 @@
-环境：
+﻿环境：
 	VirtualBox+vagrant+Homestead+Composer
 	Linux homestead 4.4.0-51-generic #72-Ubuntu SMP Thu Nov 24 18:29:54 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
 	laravel版本：5.2.45
+	
+下载不同版本的laravel：
+	composer create-project --prefer-dist laravel/laravel:5.3 laravel5.3
 
 Nginx的rewrite指令URL重写需要开启（我安装的默认没有开启）：
 	if (!-f $request_filename){
@@ -127,5 +130,19 @@ Laravel如何引用第三方（自定义）库：
 项目上线前，更新APP_KEY：
 	php artisan key:generate
 	
+项目上线前，忽略composer.json文件里require-dev的：
+	composer install --no-dev 
 	
+动手做并上传package包：
+	composer init
+		License:MIT
+		no,no,yes
+	https://www.laravist.com/series/you-must-use-composer/episodes/9
+	http://blog.csdn.net/terry_water/article/details/50477023
+	
+如果在route中很多同样的操作(每一个方法中传递同样的变量)，可以在视图层来操作(视图绑定变量)
+	@inject('status', 'App\Status')
+	
+
+		
 		
