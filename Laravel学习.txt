@@ -1,4 +1,4 @@
-﻿环境：
+环境：
 	VirtualBox+vagrant+Homestead+Composer
 	Linux homestead 4.4.0-51-generic #72-Ubuntu SMP Thu Nov 24 18:29:54 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
 	laravel版本：5.2.45
@@ -142,7 +142,13 @@ Laravel如何引用第三方（自定义）库：
 	
 如果在route中很多同样的操作(每一个方法中传递同样的变量)，可以在视图层来操作(视图绑定变量)
 	@inject('status', 'App\Status')
-	
+
+Laravel开发的时候，更多使用Repository模式实现业务逻辑和数据访问的分离
+	这种将数据访问从业务逻辑中分离出来的模式有很多好处：
+		集中数据访问逻辑使代码易于维护；
+		业务和数据访问逻辑完全分离；
+		减少代码重复；
+		是程序出错的几率降低。	
 	
 在每个测试后重置数据库
 	通常要在每次测试后还原数据库，以便之前的测试数据不会对随后的测试产生干扰。
