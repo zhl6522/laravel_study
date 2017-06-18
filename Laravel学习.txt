@@ -143,6 +143,13 @@ Laravel如何引用第三方（自定义）库：
 如果在route中很多同样的操作(每一个方法中传递同样的变量)，可以在视图层来操作(视图绑定变量)
 	@inject('status', 'App\Status')
 	
+	
+在每个测试后重置数据库
+	通常要在每次测试后还原数据库，以便之前的测试数据不会对随后的测试产生干扰。
+	tests/Feature/TeamTest +
+		use DatabaseTransactions;
 
-		
-		
+单元测试中一般会另建数据库，清空数据表：
+	php artisan tinker
+	DB::connection('sqlite_testing')->table('teams')->truncate();
+	非另建的直接执行App\Team::truncate();即可
