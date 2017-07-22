@@ -142,20 +142,16 @@ Laravel如何引用第三方（自定义）库：
 	
 如果在route中很多同样的操作(每一个方法中传递同样的变量)，可以在视图层来操作(视图绑定变量)
 	@inject('status', 'App\Status')
-
+	
 Laravel开发的时候，更多使用Repository模式实现业务逻辑和数据访问的分离
 	这种将数据访问从业务逻辑中分离出来的模式有很多好处：
 		集中数据访问逻辑使代码易于维护；
 		业务和数据访问逻辑完全分离；
 		减少代码重复；
-		是程序出错的几率降低。	
-	
-在每个测试后重置数据库
-	通常要在每次测试后还原数据库，以便之前的测试数据不会对随后的测试产生干扰。
-	tests/Feature/TeamTest +
-		use DatabaseTransactions;
+		是程序出错的几率降低。
 
-单元测试中一般会另建数据库，清空数据表：
-	php artisan tinker
-	DB::connection('sqlite_testing')->table('teams')->truncate();
-	非另建的直接执行App\Team::truncate();即可
+
+app('cineConfig')->get('cine.biqu.biqu_cine_id'))
+cineConfig服务下get config方法中数组。
+		
+withTrashed() 方法来强制查询已被软删除的模型
