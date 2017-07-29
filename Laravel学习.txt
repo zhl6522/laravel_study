@@ -60,7 +60,10 @@ composer使用国内镜像，执行下面命令后即可：
 	MAIL_ENCRYPTION=null
 	
 	auth/emails/hello.blade.php
-	
+
+composer 国内镜像：
+	composer config -g repo.packagist composer https://packagist.phpcomposer.com
+
 社会化登录：（composer.json有对应信息）
 	composer require laravel/socialite v2.0.4 （跟laravel版本有关系，安装最新的laravel/socialite版本会失败）
 
@@ -155,3 +158,14 @@ app('cineConfig')->get('cine.biqu.biqu_cine_id'))
 cineConfig服务下get config方法中数组。
 		
 withTrashed() 方法来强制查询已被软删除的模型
+
+$data = \DB::transaction(function () use ($order) {	//数据库食物处理，$order是查询没有get的对象
+            $order->status = Order::STATUS_CONSUMED;
+            $order->save();
+	$data = ‘data’;
+	return $data;
+        });
+
+$ git checkout . 还原修改内容
+$ tailf storage/logs/laravel.log  打印文件后续内容
+$ tailf storage/logs/laravel.log -n 100 打印文件最后100行内容
