@@ -1,0 +1,8 @@
+Laravel目录：
+
+	Providers目录 全局定义
+		php artisan make:provider RiakServiceProvider
+		
+		boot方法中 View:share方法对所有的视图都传递数据(设置全局)；
+			  View::composer方法可以对局部的师徒传递。
+		register方法 实例化一些配置信息，比如：注册影院配置管理服务、注册影院信息。

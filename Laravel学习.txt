@@ -169,3 +169,44 @@ $data = \DB::transaction(function () use ($order) {	//数据库食物处理，$o
 $ git checkout . 还原修改内容
 $ tailf storage/logs/laravel.log  打印文件后续内容
 $ tailf storage/logs/laravel.log -n 100 打印文件最后100行内容
+
+向其他库里进行数据迁移：
+    方法一：
+	php artisan migrate —-path=/database/**** —-database=yun
+    方法二：
+	vim .env DB_DATABASE
+	php artisan migrate --path=/database/****
+	php artisan migrate:rollback --path=/database/****
+
+
+统计sum:
+$requests = ManualTicket::where('biqu_cinema_id', Auth::user()->biqu_cinema_id)
+            ->where('start_time', '>=', $startDate)
+            ->where('start_time', '<=', $endDate)
+            ->first(
+                array(
+                    \DB::raw('SUM(manual_ticket_num) as manual_sum'),
+                    \DB::raw('SUM(sweep_ticket_num) as sweep_sum'),
+                    \DB::raw('SUM(maoyan_ticket_num) as maoyan_sum'),
+                    \DB::raw('SUM(taopiaopiao_ticket_num) as taopiaopiao_sum'),
+                    \DB::raw('SUM(wepiao_ticket_num) as wepiao_sum'),
+                    \DB::raw('SUM(biqu_ticket_num) as biqu_sum'),
+                )
+            );
+leftjoin:
+$query = $this->orderModel
+                ->select('orders.*')
+                ->leftJoin('order_tickets',
+                    'orders.id',
+                    '=',
+                    'order_tickets.order_id')
+                ->where('orders.user_id', $user ? $user->id : 0)
+                ->where('type', Order::TYPE_TICKET)
+                ->where('orders.biqu_cinema_id', Auth::user()->biqu_cinema_id);
+
+获取biqu_cinema_id:
+	Auth::user()->biqu_cinema_id;
+	app('cinemaConfig')->get('cinema.biqu.biqu_cinema_id’);
+
+
+	
