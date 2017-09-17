@@ -159,7 +159,7 @@ cineConfig服务下get config方法中数组。
 		
 withTrashed() 方法来强制查询已被软删除的模型
 
-$data = \DB::transaction(function () use ($order) {	//数据库食物处理，$order是查询没有get的对象
+$data = \DB::transaction(function () use ($order) {	//数据库事务处理，$order是查询没有get的对象
             $order->status = Order::STATUS_CONSUMED;
             $order->save();
 	$data = ‘data’;
@@ -206,7 +206,8 @@ $query = $this->orderModel
 
 获取biqu_cinema_id:
 	Auth::user()->biqu_cinema_id;
-	app('cinemaConfig')->get('cinema.biqu.biqu_cinema_id’);
+	app(‘cinemaConfig’)->get(‘cinema.biqu.biqu_cinema_id’);
 
-
+状态统一：
+	SMS::SMS_TYPE_CODE 		const SMS_TYPE_CODE = 'code';
 	
