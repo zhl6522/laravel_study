@@ -211,3 +211,7 @@ $query = $this->orderModel
 状态统一：
 	SMS::SMS_TYPE_CODE 		const SMS_TYPE_CODE = 'code';
 	
+postgresql:
+	select 'date(release_date) as d'), 'id', 'release_date', 'created_at', 'updated_at' from biqu_films where release_date > date('Y-m-d') group bu d,id（如果此处不加主键ID，查询会报错）
+	
+	
