@@ -61,9 +61,6 @@ composer使用国内镜像，执行下面命令后即可：
 	
 	auth/emails/hello.blade.php
 
-composer 国内镜像：
-	composer config -g repo.packagist composer https://packagist.phpcomposer.com
-
 社会化登录：（composer.json有对应信息）
 	composer require laravel/socialite v2.0.4 （跟laravel版本有关系，安装最新的laravel/socialite版本会失败）
 
@@ -129,6 +126,8 @@ Validation验证时使用back()->withErrors($validator);
 	
 Laravel如何引用第三方（自定义）库：
 	http://blog.csdn.net/iroycn/article/details/47036719
+	自定义函数：
+		http://blog.csdn.net/xiaoxiaodongxie/article/details/51671507
 	
 项目上线前，更新APP_KEY：
 	php artisan key:generate
