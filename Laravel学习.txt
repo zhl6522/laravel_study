@@ -69,6 +69,8 @@ GIT第三方登录：
 			http://www.open-open.com/lib/view/open1416812717570.html
 			http://duguying.net/article/%E7%94%A8github%E7%99%BB%E5%BD%95%EF%BC%8Coauth%E5%BC%80%E5%8F%91
 		
+laravel5.4+安装好框架之后 需要修改config/database.php 中 charset 和 collation，默认的在执行数据迁移时会出错。
+		
 Laravel不能创建 migration 的问题：
 	在 Laravel 项目中，由于测试，有时候用 PHP artisan make:migration create_xxx_table 创建数据库迁移。如果把创建的迁移文件 database/migrations/2016_09_13_081736_create_xxx_table.php 文件给删除了，再次执行 php artisan make:migration create_xxx_table 会报错：
 	[ErrorException]

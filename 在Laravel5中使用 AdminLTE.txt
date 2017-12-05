@@ -1,0 +1,32 @@
+在Laravel5.* 中使用 AdminLTE 文档（wondows）：
+
+我们使用的工具
+Laravel
+AdminLTE 2.3.2
+Bower
+Composer
+
+注意：所有操作都在cmd下已管理员身份运行进行、GIT Bash下会报错
+[
+$ bower init 
+报错：
+bower ENOINT        Register requires an interactive shell
+Additional error details:
+Note that you can manually force an interactive shell with --config.interactive
+在cmd下执行即可
+]
+
+下载一个全新的 Laravel
+如果不太清楚可以去官方网站查看文档link
+在此我们直接使用命令行即可
+	composer create-project laravel/laravel myapp --prefer-dist
+	
+通过 Bower 下载 AdminLTE
+	使用Bower需要做好准备工作：（仅限安装便可使用）
+		1、安装node环境:node.js
+		2、安装Git，bower从远程git仓库获取代码包:git简易指南
+		3、npm install -g bower
+		
+
+		
+	
