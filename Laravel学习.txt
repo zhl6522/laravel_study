@@ -216,3 +216,11 @@ postgresql:
 	select 'date(release_date) as d'), 'id', 'release_date', 'created_at', 'updated_at' from biqu_films where release_date > date('Y-m-d') group bu d,id（如果此处不加主键ID，查询会报错）
 	
 	
+php artisan migrate 报错：
+	In StreamHandler.php line 107:
+	  The stream or file "E:\www\ProgramPlatform\storage/logs/laravel.log" c
+	ould
+	  not be opened: failed to open stream: Permission denied
+	解决方法：把之前的数据迁移文件删除，重新生成文件，内容复制进去 重新数据迁移；
+		
+	
