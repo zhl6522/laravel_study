@@ -1,0 +1,7 @@
+laravel admin 安装问题：
+
+	php.ini中开启proc_open、proc_close、proc_nice、proc_terminate、leak、proc_get_status函数
+	
+	GIT拉去项目 需要环境下需要有PHP7+laravel5.5。http://laravelacademy.org/post/7620.html
+	
+使用Laravel-admin时 使用默认form写入多表时 主表id在辅助表中字段名必须是：article_id
