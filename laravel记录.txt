@@ -1,0 +1,114 @@
+laravel记录：
+	public/index.php 根目录
+	
+	assets/lte/dist
+	assets/qiniu
+	
+	所有数据库的调取都来自Repositories
+		UserController中：
+			protected $userRepository;
+			
+			public function __construct(
+				UserRepository $UserRepository,
+				******************************
+			) {
+				$this->userRepository = $UserRepository;
+				***************************************
+			}
+			
+			public function getList(ListRequest $request) //①、ListRequest代表请求时有验证信息在app\Http\Request\User\ListRequest.php;
+			{
+				$reqData = collect($request->all());	//获取数组所有集合
+				$users = $this->UserRepository->lists($reqData);	//操作数据库。
+				$data = compact('users', 'reqData', '****');
+				return view('admin.user.list', $data);
+			}
+			
+			public function lists($request)
+			{
+				$reqData = array_merge(
+					$request->all(),
+					['start_date' => date('Y/m/d', strtotime($startDate)),
+					 'end_date' => date('Y/m/d', strtotime($endDate))]);
+				$reqData = collect($reqData);
+				
+				$request->input('name', 'email');
+				$query = $this->userModel
+							->where('name', 'like', '%' . $request->filmName . '%')
+							->where('users.created_at', '>=', date('Y-m-01'))
+							->where('users.created_at', '>=', date('Y-m-d'));
+				if ($request->card_number) {
+					$query = $this->userCardMapModel
+						->select('users.*')
+						->Leftjoin('users',
+							'user_card_maps.user_id',
+							'=',
+							'users.id')
+						->join('user_card_maps',
+                           'users.id',
+                           '=',
+                           'user_card_maps.user_id')
+						->where('user_card_maps.status', UserCardMap::STATUS_BIND)			//const STATUS_BIND   = 1;
+						->where('user_card_maps.biqu_cinema_id', Auth::user()->biqu_cinema_id)
+						->where('user_card_maps.card_number', $request->card_number);
+					return $query->with('userExtend', 'userCardMap')
+							->orderBy(
+								$request->get('sort_type', 'created_at'),
+								$request->get('sort', 'desc'))
+							->paginate($this->pageSize);
+				}
+				
+				BiquFilmObjRecommend::where('film_id', $request->filmId)
+                              ->with([
+                                  'filmObjMap' => function ($query) {
+                                      $query->where('obj_type', 2);
+                                  }
+                              ])->where('examine', 1)
+							  ->get();
+				
+			}
+			
+			①public function rules()
+			{
+				return [
+					'sort_type' => 'in:viewing_num,created_at',
+					'sort'      => 'in:desc,asc',
+					'img'       => 'required|image',
+					'film_id'   => 'required_if:type,' . Banner::TYPE_FILM,	//验证字段在另一个字段(type)等于指定值value时是必须的
+				];
+			}
+			public function messages()
+			{
+				return [
+					'sort_type.in'  => 'sort_type 参数有误',
+					'sort.in'  => 'sort 参数有误',
+					'img.images'            => '横幅图片格式不正确',
+					'film_id.required_if'   => '影片是必选的',
+				];
+			}
+			
+			laravel事务：
+			public function update($request)
+			{
+				DB::transaction(function () use ($request) {
+					$this->rechargeCfgsModel
+						->where('biqu_cinema_id', Auth::user()->biqu_cinema_id)
+						->delete();
+					foreach ($request->price as $k => $v) {
+						if ($v) {
+							$give = $request->give[$k] ? $request->give[$k] : 0;
+							$tips = $request->tips[$k] ? $request->tips[$k] : '';
+							$this->rechargeCfgsModel->create([
+								'recharge_price'    => $v,
+								'give_price'        => $give,
+								'tips'              => $tips,
+								'biqu_cinema_id'       => Auth::user()->biqu_cinema_id
+							]);
+						}
+					}
+				});
+			}
+			view:
+				{{ $reqData->get('start_date') ? $reqData->get('start_date') : date('Y/m/d') }}
+				
+				

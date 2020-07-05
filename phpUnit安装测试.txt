@@ -1,0 +1,56 @@
+laravel Unit安装测试
+
+根目录下
+	vim composer.json
+		"require-dev": {
+			"phpunit/phpunit": "5.5.*"
+		}
+
+	composer global require "phpunit/phpunit=5.5.*"
+	phpunit
+		看到有内容显示表示安装成功
+		
+测试
+	如果出现问题，就删除原来安装的扩展模块
+	rm -rf node_modules/
+	重新安装一遍
+
+
+Gulp 最常见的用法之一就是自动构建单元测试，这里我们将遵循 TDD（测试驱动开发）流程让 Gulp 自动运行测试。
+
+首先，编辑根目录下的 gulpfile.js 文件如下：
+
+var elixir = require('laravel-elixir');
+
+elixir(function(mix) {
+    mix.phpUnit();
+});
+	
+这里我们调用 elixir() 方法，接收的 mix 对象可以用于处理很多事情。你可以用它来将 LESS 文件编译成 CSS 文件，也可以用它来将多个 CSS 文件合并到一起，并且为合并后的文件添加版本控制，等等等等。所有这些事情都可以通过调用 mix 对象提供的接口方法来实现。
+
+根目录下执行:
+gulp
+	报错信息：
+		module.js:471
+			throw err;
+			^
+		Error: Cannot find module 'laravel-elixir'
+	解决方法：
+	1、是在用npm安装扩展包的时候，有些module没有安装上，一些被墙，这里需要开启VPN重新安装npm扩展包：(安装速度慢，推荐第二种方法)
+		// 1.先删除原来安装的扩展模块
+		rm -rf node_modules/
+		// 2.重新安装
+		npm install
+		// 3.gulp命令
+		gulp
+	2、如果没有VPN，则可以使用淘宝的镜像地址下载安装：npm 的第三方库很多被墙了，建议使用淘宝的良心镜像：淘宝镜像： http://npm.taobao.org
+		taobao镜像使用说明
+		你可以使用我们定制的 cnpm (gzip 压缩支持) 命令行工具代替默认的 npm:
+		$ npm install -g cnpm --registry=https://registry.npm.taobao.org
+		用淘宝的cnpm安装gulp
+		$ cnpm install gulp
+	3、更新npm安装包
+		$ npm update
+		$ gulp copyfiles
+		
+	
